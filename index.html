@@ -339,7 +339,7 @@
         <div class="payment-label" data-sl="Način plačila" data-en="Payment method">Način plačila</div>
         <div class="payment-options">
           <label class="payment-option">
-            <input type="radio" name="payment" value="paypal" checked />
+            <input type="radio" name="payment" value="paypal" />
             <div class="payment-card">
               <span class="payment-icon">
                 <svg viewBox="0 0 50 32" height="22" xmlns="http://www.w3.org/2000/svg">
@@ -393,7 +393,7 @@
             </div>
           </label>
           <label class="payment-option">
-            <input type="radio" name="payment" value="card" />
+            <input type="radio" name="payment" value="card" checked />
             <div class="payment-card">
               <span class="payment-icon">
                 <svg viewBox="0 0 38 24" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -408,7 +408,7 @@
         </div>
       </div>
 
-      <div id="stripe-card-element" style="display:none; background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:1rem; margin-bottom:1rem;"></div>
+      <div id="stripe-card-element" style="display:block; background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:1rem; margin-bottom:1rem;"></div>
       <div id="stripe-error" style="color:#ff4444; font-size:0.82rem; margin-bottom:0.8rem; display:none;"></div>
       <button class="btn-register" id="registerBtn" onclick="handleRegister()" data-sl="Potrdi prijavo in plačaj →" data-en="Confirm & pay →">Potrdi prijavo in plačaj →</button>
 
@@ -473,7 +473,7 @@
   });
 
   let cardMounted = false;
-  let currentPaymentMethod = 'paypal';
+  let currentPaymentMethod = 'card';
 
   document.querySelectorAll('input[name="payment"]').forEach(radio => {
     radio.addEventListener('change', function() {
