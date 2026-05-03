@@ -408,7 +408,9 @@
         </div>
       </div>
 
-      <button class="btn-register" onclick="handleRegister()" data-sl="Potrdi prijavo in plačaj →" data-en="Confirm & pay →">Potrdi prijavo in plačaj →</button>
+      <div id="stripe-card-element" style="display:none; background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:1rem; margin-bottom:1rem;"></div>
+      <div id="stripe-error" style="color:#ff4444; font-size:0.82rem; margin-bottom:0.8rem; display:none;"></div>
+      <button class="btn-register" id="registerBtn" onclick="handleRegister()" data-sl="Potrdi prijavo in plačaj →" data-en="Confirm & pay →">Potrdi prijavo in plačaj →</button>
 
     </div>
 
@@ -458,7 +460,34 @@
   </div>
 </footer>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script>
+  const STRIPE_PK = 'pk_test_51TSvvi1V7qD5QGmFRes0lVYXp5UrV7KqZWE0ovni4esIE0nyf9dGFnpfAouPa7UZQlRXlQVK4kd7qAIOlfHdSbrl00eC7EvjmG';
+  const stripe = Stripe(STRIPE_PK);
+  const elements = stripe.elements();
+  const cardElement = elements.create('card', {
+    style: {
+      base: { color: '#e8e8e8', fontFamily: 'DM Sans, sans-serif', fontSize: '16px', '::placeholder': { color: '#666' } },
+      invalid: { color: '#ff4444' }
+    }
+  });
+
+  let cardMounted = false;
+  let currentPaymentMethod = 'paypal';
+
+  document.querySelectorAll('input[name="payment"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      currentPaymentMethod = this.value;
+      const cardEl = document.getElementById('stripe-card-element');
+      if (this.value === 'card') {
+        cardEl.style.display = 'block';
+        if (!cardMounted) { cardElement.mount('#stripe-card-element'); cardMounted = true; }
+      } else {
+        cardEl.style.display = 'none';
+      }
+    });
+  });
+
   let spots = 9;
   const total = 15;
   let currentLang = 'sl';
